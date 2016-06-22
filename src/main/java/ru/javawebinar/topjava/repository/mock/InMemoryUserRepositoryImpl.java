@@ -3,12 +3,11 @@ package ru.javawebinar.topjava.repository.mock;
 import org.springframework.stereotype.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -22,6 +21,14 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     private static final Logger LOG = LoggerFactory.getLogger(InMemoryUserRepositoryImpl.class);
     private Map<Integer, User> repository = new ConcurrentHashMap<>();
     private AtomicInteger counter = new AtomicInteger(0);
+    public final List<User> USER_LIST = Arrays.asList(
+            new User(counter.incrementAndGet(), "Vasia", "vasia@gmail.com", "123", Role.ROLE_USER, Role.values()),
+            new User(counter.incrementAndGet(), "Admin", "admin@gmail.com", "123", Role.ROLE_ADMIN, Role.values())
+    );
+
+    {
+        USER_LIST.forEach(this::save);
+    }
 
 
 
@@ -44,11 +51,11 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public User get(int id) {
         LOG.info("get " + id);
-        return repository.get(id);
+        return repository.containsKey(id) ? repository.get(id) : null;
     }
 
     @Override
-    public List<User> getAll() {
+    public Collection<User> getAll() {
         LOG.info("getAll");
         return repository.values()
                 .stream()
@@ -62,7 +69,6 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
         return repository.values()
                 .stream()
                 .filter(user -> user.getEmail().equalsIgnoreCase(email))
-                .findFirst()
-                .get();
+                .findAny().orElse(null);
     }
 }
