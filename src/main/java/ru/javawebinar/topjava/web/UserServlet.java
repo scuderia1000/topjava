@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.repository.mock.InMemoryUserRepositoryImpl;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +20,13 @@ import static org.slf4j.LoggerFactory.getLogger;
  */
 public class UserServlet extends HttpServlet {
     private static final Logger LOG = getLogger(UserServlet.class);
+
     private UserRepository repository;
 
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        repository = new InMemoryUserRepositoryImpl();
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("redirect to userList");

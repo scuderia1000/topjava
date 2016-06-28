@@ -21,21 +21,19 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     private static final Logger LOG = LoggerFactory.getLogger(InMemoryUserRepositoryImpl.class);
     private Map<Integer, User> repository = new ConcurrentHashMap<>();
     private AtomicInteger counter = new AtomicInteger(0);
-    public final List<User> USER_LIST = Arrays.asList(
-            new User(counter.incrementAndGet(), "Vasia", "vasia@gmail.com", "123", Role.ROLE_USER, Role.values()),
-            new User(counter.incrementAndGet(), "Admin", "admin@gmail.com", "123", Role.ROLE_ADMIN, Role.values())
-    );
+
+    public static final int USER_ID = 1;
+    public static final int ADMIN_ID = 2;
 
     {
-        USER_LIST.forEach(this::save);
+        save(new User(1, "User", "user@gmail.com", "123", Role.ROLE_USER));
+        save(new User(2, "Admin", "admin@gmail.com", "123", Role.ROLE_ADMIN));
     }
-
-
 
     @Override
     public boolean delete(int id) {
         LOG.info("delete " + id);
-        return repository.remove(id, repository.get(id));
+        return repository.remove(id) != null;
     }
 
     @Override
@@ -51,7 +49,7 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public User get(int id) {
         LOG.info("get " + id);
-        return repository.containsKey(id) ? repository.get(id) : null;
+        return repository.get(id);
     }
 
     @Override
@@ -66,9 +64,10 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public User getByEmail(String email) {
         LOG.info("getByEmail " + email);
-        return repository.values()
+        return getAll()
                 .stream()
                 .filter(user -> user.getEmail().equalsIgnoreCase(email))
-                .findAny().orElse(null);
+                .findFirst()
+                .orElse(null);
     }
 }

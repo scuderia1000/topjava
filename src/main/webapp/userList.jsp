@@ -18,8 +18,6 @@
             <th>E-mail</th>
             <th>Calories per day</th>
             <th>Role</th>
-            <th></th>
-            <th></th>
         </tr>
         </thead>
         <c:forEach items="${userList}" var="user">
