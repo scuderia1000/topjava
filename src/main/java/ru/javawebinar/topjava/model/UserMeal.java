@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -22,7 +23,7 @@ public class UserMeal extends BaseEntity {
     public static final String ALL_SORTED = "UserMeal.getAllSorted";
 
     @Column(name = "date_time", nullable = false)
-    @NotEmpty
+    @NotNull
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
@@ -30,7 +31,6 @@ public class UserMeal extends BaseEntity {
     private String description;
 
     @Column(name = "calories", nullable = false)
-    @NotEmpty
     protected int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
