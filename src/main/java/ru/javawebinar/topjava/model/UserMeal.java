@@ -9,9 +9,17 @@ import java.time.LocalDateTime;
  * GKislin
  * 11.01.2015.
  */
+@NamedQueries({
+        @NamedQuery(name = UserMeal.DELETE, query = "DELETE FROM UserMeal um WHERE um.id=:id AND um.user.id=:userId"),
+        @NamedQuery(name = UserMeal.ALL_SORTED, query = "SELECT um FROM UserMeal um WHERE um.user.id=:userId ORDER BY um.dateTime DESC ")
+})
+
 @Entity
 @Table(name = "meals")
 public class UserMeal extends BaseEntity {
+
+    public static final String DELETE = "UserMeal.delete";
+    public static final String ALL_SORTED = "UserMeal.getAllSorted";
 
     @Column(name = "date_time", nullable = false)
     @NotEmpty

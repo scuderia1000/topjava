@@ -38,8 +38,9 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(int id, int userId) {
-        return false;
+        return em.createNamedQuery(UserMeal.DELETE).setParameter("id", id).setParameter("userId", userId).executeUpdate() != 0;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
 
     @Override
     public List<UserMeal> getAll(int userId) {
-        return null;
+        return em.createNamedQuery(UserMeal.ALL_SORTED).setParameter("userId", userId).getResultList();
     }
 
     @Override
