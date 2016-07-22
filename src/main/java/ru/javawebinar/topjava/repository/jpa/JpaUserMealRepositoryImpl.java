@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository.jpa;
 
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.User;
@@ -40,17 +41,26 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
     @Override
     @Transactional
     public boolean delete(int id, int userId) {
-        return em.createNamedQuery(UserMeal.DELETE).setParameter("id", id).setParameter("userId", userId).executeUpdate() != 0;
+        return em.createNamedQuery(UserMeal.DELETE)
+                .setParameter("id", id)
+                .setParameter("userId", userId)
+                .executeUpdate() != 0;
     }
 
     @Override
     public UserMeal get(int id, int userId) {
-        return em.find(UserMeal.class, id);
+        List<UserMeal> userMeals = em.createNamedQuery(UserMeal.GET, UserMeal.class)
+                .setParameter("id", id)
+                .setParameter("userId", userId)
+                .getResultList();
+        return DataAccessUtils.singleResult(userMeals);
     }
 
     @Override
     public List<UserMeal> getAll(int userId) {
-        return em.createNamedQuery(UserMeal.ALL_SORTED).setParameter("userId", userId).getResultList();
+        return em.createNamedQuery(UserMeal.ALL_SORTED)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 
     @Override

@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
  */
 @NamedQueries({
         @NamedQuery(name = UserMeal.DELETE, query = "DELETE FROM UserMeal um WHERE um.id=:id AND um.user.id=:userId"),
-        @NamedQuery(name = UserMeal.ALL_SORTED, query = "SELECT um FROM UserMeal um WHERE um.user.id=:userId ORDER BY um.dateTime DESC ")
+        @NamedQuery(name = UserMeal.ALL_SORTED, query = "SELECT um FROM UserMeal um WHERE um.user.id=:userId ORDER BY um.dateTime DESC "),
+        @NamedQuery(name = UserMeal.GET, query = "SELECT um FROM UserMeal um WHERE um.id=:id AND um.user.id=:userId")
 })
 
 @Entity
@@ -21,6 +22,7 @@ public class UserMeal extends BaseEntity {
 
     public static final String DELETE = "UserMeal.delete";
     public static final String ALL_SORTED = "UserMeal.getAllSorted";
+    public static final String GET = "UserMeal.get";
 
     @Column(name = "date_time", nullable = false)
     @NotNull
