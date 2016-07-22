@@ -21,7 +21,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class JpaUserMealRepositoryImpl implements UserMealRepository {
 
-    @PersistenceContext(type= PersistenceContextType.EXTENDED)
+    @PersistenceContext
     private EntityManager em;
 
     @Override
